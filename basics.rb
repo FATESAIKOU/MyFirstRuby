@@ -159,3 +159,96 @@ end
 dynamic_method('Hello from dynamic method!')
 
 puts '########## Step test methods - End ##########'
+
+# Classes
+puts '########## Step test classes - Start ##########'
+class Person
+    attr_accessor :name, :age
+
+    def initialize(name, age)
+        @name = name
+        @age = age
+    end
+
+    def introduce
+        puts "[introduce] Hi, I'm #{@name} and I'm #{@age} years old."
+    end
+end
+
+person = Person.new('Bob', 25)
+person.introduce
+
+## Inheritance
+class Student < Person
+    attr_accessor :student_id
+
+    def initialize(name, age, student_id)
+        super(name, age)
+        @student_id = student_id
+    end
+
+    def introduce
+        super()
+        puts "[introduce] My student ID is #{@student_id}."
+    end
+end
+
+student = Student.new('Charlie', 22, 'S12345')
+student.introduce
+
+## Implementing Modules
+module Greeter
+    def greet
+        puts "[greet] Hello, #{@name}!"
+    end
+end
+class Teacher < Person
+    include Greeter
+
+    attr_accessor :subject
+
+    def initialize(name, age, subject)
+        super(name, age)
+        @subject = subject
+    end
+
+    def introduce
+        super()
+        puts "[introduce] I teach #{@subject}."
+    end
+end
+
+teacher = Teacher.new('Diana', 30, 'Math')
+teacher.introduce
+teacher.greet
+
+## Overriding Module Methods
+module Fareweller
+    def farewell
+        puts "[farewell] Goodbye from module!"
+    end
+end
+class Staff < Person
+    include Fareweller
+
+    def farewell
+        puts "[farewell] Goodbye from Staff class!"
+    end
+end
+
+staff = Staff.new('Eve', 28)
+staff.farewell
+
+## Checking include module
+puts "[include?] Does Teacher include Greeter? #{Teacher.include?(Greeter)}"
+puts "[include?] Does Staff include Fareweller? #{Staff.include?(Fareweller)}"
+
+## Interface implementation check
+def implements_module?(obj, mod)
+    mod.instance_methods.all? { |method| obj.respond_to?(method) }
+end
+
+puts "[implements_module?] Does teacher implement Greeter? #{implements_module?(teacher, Greeter)}"
+puts "[implements_module?] Does staff implement Fareweller? #{implements_module?(staff, Fareweller)}"
+
+puts '########## Step test classes - End ##########'
