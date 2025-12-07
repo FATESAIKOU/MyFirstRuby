@@ -148,4 +148,14 @@ rescue NoMethodError => e
     puts "[Error] #{e.message}"
 end
 
+## Lambda
+my_lambda = ->(a, b) { a * b }
+puts "[lambda] 4 * 5 = #{my_lambda.call(4, 5)}"
+
+## function call to define method
+define_method(:dynamic_method) do |msg|
+    puts "[dynamic_method] #{msg}"
+end
+dynamic_method('Hello from dynamic method!')
+
 puts '########## Step test methods - End ##########'
