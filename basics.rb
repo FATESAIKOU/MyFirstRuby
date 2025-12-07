@@ -222,6 +222,14 @@ teacher = Teacher.new('Diana', 30, 'Math')
 teacher.introduce
 teacher.greet
 
+## Interface check function with include and respond_to?
+def implements_interface?(obj, *modules)
+    modules.all? do |mod|
+        obj.class.included_modules.include?(mod) &&
+        mod.instance_methods.all? { |method| obj.respond_to?(method) }
+    end
+end
+
 ## Overriding Module Methods
 module Fareweller
     def farewell
@@ -239,16 +247,20 @@ end
 staff = Staff.new('Eve', 28)
 staff.farewell
 
-## Checking include module
-puts "[include?] Does Teacher include Greeter? #{Teacher.include?(Greeter)}"
-puts "[include?] Does Staff include Fareweller? #{Staff.include?(Fareweller)}"
+puts "[implements_interface?] Does teacher implement Greeter? #{implements_interface?(teacher, Greeter)}"
+puts "[implements_interface?] Does staff implement Fareweller? #{implements_interface?(staff, Fareweller)}"
 
-## Interface implementation check
-def implements_module?(obj, mod)
-    mod.instance_methods.all? { |method| obj.respond_to?(method) }
+## Module extend
+module Announcer
+    def announce
+        puts "[announce] Announcement from module!"
+    end
+end
+class Principal < Person
+    extend Announcer
 end
 
-puts "[implements_module?] Does teacher implement Greeter? #{implements_module?(teacher, Greeter)}"
-puts "[implements_module?] Does staff implement Fareweller? #{implements_module?(staff, Fareweller)}"
+Principal.announce
+puts "[implements_interface?] Does Principal implement Announcer? #{Principal.singleton_class.included_modules.include?(Announcer)}"
 
 puts '########## Step test classes - End ##########'
