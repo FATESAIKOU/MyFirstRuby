@@ -1,5 +1,8 @@
 class PostsController < ApplicationController
   def index
-    render json: { message: "Welcome to TodoApp!" }
+    return_str = 'Hello, World!'
+    a = 1 + 1
+    b = 2 + 1
+    render json: { message: return_str }
   end
 end

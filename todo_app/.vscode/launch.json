@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rdbg",
+      "name": "Rails server (todo_app, bundle exec rdbg)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "rdbgPath": "bundle exec rdbg",
+      "command": "${workspaceFolder}/bin/rails",
+      "script": "server",
+      "useBundler": true
+    }
+  ]
+}
