@@ -5,9 +5,9 @@
       "type": "rdbg",
       "name": "Rails server (todo_app, bundle exec rdbg)",
       "request": "launch",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/todo_app",
       "rdbgPath": "bundle exec rdbg",
-      "command": "${workspaceFolder}/bin/rails",
+      "command": "bin/rails",
       "script": "server",
       "useBundler": true
     }

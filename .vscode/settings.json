@@ -1,5 +1,6 @@
 {
   "rubyLsp.rubyVersionManager": {
     "identifier": "asdf"
-  }
+  },
+  "rubyLsp.bundleGemfile": "todo_app/Gemfile"
 }
