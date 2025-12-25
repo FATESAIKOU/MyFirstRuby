@@ -1,0 +1,72 @@
+<%# 列表頁：顯示所有 Todo %>
+
+<h1>Todo 列表</h1>
+
+<%# 顯示 flash 訊息 %>
+<% if notice %>
+  <p style="color: green; padding: 10px; background: #d4edda; border: 1px solid #c3e6cb;">
+    <%= notice %>
+  </p>
+<% end %>
+
+<%# 新增按鈕 %>
+<p>
+  <%= link_to "新增 Todo", new_todo_path, 
+      style: "padding: 10px 20px; background: #28a745; color: white; text-decoration: none;" %>
+</p>
+
+<%# Todo 列表表格 %>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+  <thead style="background: #f8f9fa;">
+    <tr>
+      <th>ID</th>
+      <th>標題</th>
+      <th>狀態</th>
+      <th>到期日</th>
+      <th>建立時間</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @todos.each do |todo| %>
+      <tr style="<%= todo.done? ? 'background: #f0f0f0; color: #888;' : '' %>">
+        <td><%= todo.id %></td>
+        <td>
+          <%= link_to todo.title, todo_path(todo) %>
+          <% if todo.done? %>
+            <span style="text-decoration: line-through;"></span>
+          <% end %>
+        </td>
+        <td>
+          <% if todo.pending? %>
+            <span style="color: orange;">⏳ 待處理</span>
+          <% else %>
+            <span style="color: green;">✅ 已完成</span>
+          <% end %>
+        </td>
+        <td>
+          <% if todo.due_date %>
+            <%= todo.due_date.strftime('%Y-%m-%d') %>
+            <% if todo.due_date < Date.current && todo.pending? %>
+              <span style="color: red;">（已過期）</span>
+            <% end %>
+          <% else %>
+            <span style="color: #999;">無期限</span>
+          <% end %>
+        </td>
+        <td><%= todo.created_at.strftime('%Y-%m-%d %H:%M') %></td>
+        <td>
+          <%= link_to "查看", todo_path(todo) %> |
+          <%= link_to "編輯", edit_todo_path(todo) %> |
+          <%= link_to "刪除", todo_path(todo), 
+              data: { turbo_method: :delete, turbo_confirm: "確定要刪除「#{todo.title}」嗎？" },
+              style: "color: red;" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @todos.empty? %>
+  <p style="text-align: center; padding: 20px; color: #666;">目前沒有任何 Todo，請新增一個吧！</p>
+<% end %>

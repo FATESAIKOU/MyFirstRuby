@@ -1,0 +1,60 @@
+<%# 詳細頁：顯示單一 Todo %>
+
+<h1>Todo 詳細資訊</h1>
+
+<div style="max-width: 600px; padding: 20px; border: 1px solid #ddd;">
+  <%# 標題 %>
+  <h2 style="<%= @todo.done? ? 'text-decoration: line-through; color: #888;' : '' %>">
+    <%= @todo.title %>
+  </h2>
+
+  <%# 狀態 %>
+  <p>
+    <strong>狀態：</strong>
+    <% if @todo.pending? %>
+      <span style="color: orange; font-weight: bold;">⏳ 待處理</span>
+    <% else %>
+      <span style="color: green; font-weight: bold;">✅ 已完成</span>
+    <% end %>
+  </p>
+
+  <%# 到期日 %>
+  <p>
+    <strong>到期日：</strong>
+    <% if @todo.due_date %>
+      <%= @todo.due_date.strftime('%Y 年 %m 月 %d 日') %>
+      <% if @todo.due_date < Date.current && @todo.pending? %>
+        <span style="color: red; font-weight: bold;">（已過期！）</span>
+      <% end %>
+    <% else %>
+      <span style="color: #999;">未設定</span>
+    <% end %>
+  </p>
+
+  <%# 描述 %>
+  <p>
+    <strong>描述：</strong><br>
+    <% if @todo.description.present? %>
+      <%= simple_format(@todo.description) %>
+    <% else %>
+      <span style="color: #999;">無描述</span>
+    <% end %>
+  </p>
+
+  <%# 時間戳記 %>
+  <p style="color: #888; font-size: 12px;">
+    建立時間：<%= @todo.created_at.strftime('%Y-%m-%d %H:%M:%S') %><br>
+    更新時間：<%= @todo.updated_at.strftime('%Y-%m-%d %H:%M:%S') %>
+  </p>
+</div>
+
+<%# 操作按鈕 %>
+<div style="margin-top: 20px;">
+  <%= link_to "編輯", edit_todo_path(@todo),
+      style: "padding: 8px 16px; background: #007bff; color: white; text-decoration: none;" %>
+  <%= link_to "刪除", todo_path(@todo),
+      data: { turbo_method: :delete, turbo_confirm: "確定要刪除「#{@todo.title}」嗎？" },
+      style: "padding: 8px 16px; background: #dc3545; color: white; text-decoration: none; margin-left: 10px;" %>
+  <%= link_to "返回列表", todos_path,
+      style: "margin-left: 10px;" %>
+</div>

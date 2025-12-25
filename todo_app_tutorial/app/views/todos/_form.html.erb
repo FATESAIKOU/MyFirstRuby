@@ -1,0 +1,60 @@
+<%# 
+  共用表單 Partial
+  - 用於 new 和 edit 頁面
+  - @todo 由 controller 傳入
+%>
+
+<%= form_with model: @todo, local: true do |form| %>
+  <%# 顯示驗證錯誤訊息 %>
+  <% if @todo.errors.any? %>
+    <div style="color: red; margin-bottom: 20px; padding: 10px; border: 1px solid red;">
+      <h4><%= pluralize(@todo.errors.count, "個錯誤") %> 導致無法儲存：</h4>
+      <ul>
+        <% @todo.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# 標題欄位 %>
+  <div style="margin-bottom: 15px;">
+    <%= form.label :title, "標題", style: "display: block; font-weight: bold;" %>
+    <%= form.text_field :title, 
+        style: "width: 100%; padding: 8px; font-size: 16px;",
+        placeholder: "請輸入 Todo 標題（2-100 字）" %>
+  </div>
+
+  <%# 描述欄位 %>
+  <div style="margin-bottom: 15px;">
+    <%= form.label :description, "描述", style: "display: block; font-weight: bold;" %>
+    <%= form.text_area :description, 
+        rows: 4,
+        style: "width: 100%; padding: 8px; font-size: 14px;",
+        placeholder: "請輸入詳細描述（選填，最多 500 字）" %>
+  </div>
+
+  <%# 狀態欄位 %>
+  <div style="margin-bottom: 15px;">
+    <%= form.label :status, "狀態", style: "display: block; font-weight: bold;" %>
+    <%= form.select :status, 
+        Todo.statuses.keys.map { |s| [s == 'pending' ? '待處理' : '已完成', s] },
+        {},
+        style: "padding: 8px; font-size: 14px;" %>
+  </div>
+
+  <%# 到期日欄位 %>
+  <div style="margin-bottom: 15px;">
+    <%= form.label :due_date, "到期日", style: "display: block; font-weight: bold;" %>
+    <%= form.date_field :due_date, 
+        style: "padding: 8px; font-size: 14px;" %>
+    <small style="color: #666;">（選填）</small>
+  </div>
+
+  <%# 送出按鈕 %>
+  <div style="margin-top: 20px;">
+    <%= form.submit @todo.new_record? ? "建立 Todo" : "更新 Todo",
+        style: "padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; cursor: pointer;" %>
+    <%= link_to "取消", todos_path, style: "margin-left: 10px;" %>
+  </div>
+<% end %>
